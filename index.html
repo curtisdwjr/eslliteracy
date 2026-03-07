@@ -1,0 +1,2554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn With Me</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF8F0;
+    --primary: #FF6B35;
+    --secondary: #4ECDC4;
+    --accent: #FFE66D;
+    --purple: #A855F7;
+    --green: #22C55E;
+    --blue: #3B82F6;
+    --dark: #2D2D2D;
+    --card: #FFFFFF;
+    --shadow: 0 4px 20px rgba(0,0,0,0.1);
+    --radius: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== TOP NAV ===== */
+  .top-bar {
+    background: linear-gradient(135deg, #FF6B35, #FF8C42);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .app-icon {
+    font-size: 32px;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .app-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+  }
+
+  /* ===== SECTION NAV ===== */
+  .section-nav {
+    display: flex;
+    gap: 8px;
+    padding: 16px 16px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+
+  .section-nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 3px solid transparent;
+    background: #f3f4f6;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #666;
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+
+  .nav-btn .nav-icon { font-size: 24px; }
+  .nav-btn:hover { transform: scale(1.05); }
+  .nav-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: #cc4400;
+    box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+    transform: scale(1.05);
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    padding: 20px 16px 100px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.4s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== LANGUAGE TOGGLE ===== */
+  .lang-toggle {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    border: 3px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+  }
+
+  .lang-btn .flag { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; }
+  .lang-btn.active {
+    border-color: var(--secondary);
+    background: var(--secondary);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(78,205,196,0.4);
+  }
+
+  .speaker-pulse {
+    animation: pulseGrow 0.6s ease;
+  }
+
+  @keyframes pulseGrow {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+
+  /* ===== ALPHABET GRID ===== */
+  .alpha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 12px;
+  }
+
+  .letter-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px 8px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 3px solid transparent;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .letter-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .letter-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+  .letter-card:hover::before { opacity: 0.3; }
+  .letter-card.playing { border-color: var(--primary); transform: scale(1.1); }
+
+  .letter-upper {
+    font-family: 'Baloo 2', cursive;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+  }
+
+  .letter-lower {
+    font-family: 'Baloo 2', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.2;
+  }
+
+  .letter-special { color: var(--purple); }
+
+  .sound-wave {
+    font-size: 16px;
+    margin-top: 6px;
+    opacity: 0.6;
+  }
+
+  /* ===== WRITING SECTION ===== */
+  .writing-area {
+    text-align: center;
+  }
+
+  .letter-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .letter-select-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    border: 3px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .letter-select-btn:hover { border-color: var(--primary); transform: scale(1.1); }
+  .letter-select-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: scale(1.1);
+  }
+
+  .canvas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .write-canvas-wrap {
+    background: white;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .write-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 28px;
+    font-weight: 800;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  canvas {
+    border-radius: 16px;
+    background: #FAFAFA;
+    border: 3px dashed #ddd;
+    display: block;
+  }
+
+  .write-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .ctrl-btn {
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.2s;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+
+  .ctrl-btn.play-btn {
+    background: var(--green);
+    color: white;
+    font-size: 20px;
+    padding: 12px 28px;
+  }
+
+  .ctrl-btn.slow-btn { background: var(--blue); color: white; }
+  .ctrl-btn.fast-btn { background: var(--accent); color: var(--dark); }
+  .ctrl-btn:hover { transform: scale(1.05); }
+  .ctrl-btn:active { transform: scale(0.97); }
+
+  /* ===== NUMBERS SECTION ===== */
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+
+  .number-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 16px 8px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 3px solid transparent;
+    transition: all 0.25s;
+  }
+
+  .number-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+  .number-card.playing { border-color: var(--secondary); transform: scale(1.1); }
+
+  .num-digit {
+    font-family: 'Baloo 2', cursive;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--purple);
+    line-height: 1;
+  }
+
+  .num-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: center;
+    margin-top: 4px;
+    min-height: 20px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--secondary);
+  }
+
+  /* ===== NUMBER WRITING ===== */
+  .num-selector {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .num-select-btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    border: 3px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--dark);
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .num-select-btn:hover { border-color: var(--purple); transform: scale(1.1); }
+  .num-select-btn.active {
+    background: var(--purple);
+    color: white;
+    border-color: var(--purple);
+    transform: scale(1.1);
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .section-header .big-emoji {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* ===== PLAYING INDICATOR ===== */
+  .playing-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--dark);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+
+  .playing-bar.show { transform: translateY(0); }
+
+  .playing-waves {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .wave-bar {
+    width: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: wave 0.8s infinite ease-in-out;
+  }
+
+  .wave-bar:nth-child(1) { height: 16px; animation-delay: 0s; }
+  .wave-bar:nth-child(2) { height: 24px; animation-delay: 0.1s; }
+  .wave-bar:nth-child(3) { height: 20px; animation-delay: 0.2s; }
+  .wave-bar:nth-child(4) { height: 28px; animation-delay: 0.3s; }
+  .wave-bar:nth-child(5) { height: 16px; animation-delay: 0.4s; }
+
+  @keyframes wave {
+    0%,100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.3); }
+  }
+
+  .playing-text {
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .alpha-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+    .letter-upper { font-size: 34px; }
+    .letter-lower { font-size: 24px; }
+    .num-digit { font-size: 34px; }
+    canvas { width: 280px !important; height: 280px !important; }
+  }
+
+  .progress-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .pdot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: background 0.3s;
+  }
+  .pdot.done { background: var(--green); }
+  /* ===== PHONICS SECTION ===== */
+  .phonics-family {
+    margin-bottom: 28px;
+  }
+
+  .phonics-family-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 13px;
+    font-weight: 800;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  .phonics-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+
+  .phonics-card {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 6px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 3px solid transparent;
+    transition: all 0.25s;
+  }
+
+  .phonics-card:hover { transform: translateY(-3px); border-color: var(--secondary); }
+  .phonics-card.playing { border-color: var(--primary); background: #fff5f0; transform: scale(1.08); }
+
+  .phonics-syl {
+    font-family: 'Baloo 2', cursive;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.1;
+  }
+
+  /* ===== WORD BUILDER ===== */
+  .builder-display {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .builder-syllables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .builder-chip {
+    background: var(--primary);
+    color: white;
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .builder-chip:hover { transform: scale(1.1); }
+
+  .builder-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .builder-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .builder-btn.speak { background: var(--primary); color: white; }
+  .builder-btn.clear { background: #eee; color: var(--dark); }
+  .builder-btn:hover { transform: translateY(-2px); }
+  .builder-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  .builder-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .builder-syl-btn {
+    background: white;
+    border: 3px solid var(--secondary);
+    border-radius: 12px;
+    padding: 10px 4px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .builder-syl-btn:hover { background: var(--secondary); color: white; transform: scale(1.05); }
+  .builder-syl-btn.active { background: var(--secondary); color: white; }
+
+  .builder-family-label {
+    font-family: 'Baloo 2', cursive;
+    font-size: 12px;
+    font-weight: 800;
+    color: #aaa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 14px 0 6px;
+  }
+
+  /* ===== TRACING ===== */
+  .trace-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .trace-canvas-wrap {
+    position: relative;
+    display: inline-block;
+  }
+
+  #traceGuide {
+    border-radius: 16px;
+    background: white;
+    box-shadow: var(--shadow);
+  }
+
+  #traceCanvas {
+    border-radius: 16px;
+    background: white;
+    box-shadow: var(--shadow);
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .trace-result {
+    font-family: 'Baloo 2', cursive;
+    font-size: 28px;
+    font-weight: 800;
+    min-height: 44px;
+    text-align: center;
+  }
+
+  .trace-controls {
+    display: flex;
+    gap: 12px;
+  }
+
+  /* ===== MATCHING GAME ===== */
+  .match-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .match-mode-btns {
+    display: flex;
+    gap: 10px;
+  }
+
+  .match-mode-btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border: 3px solid var(--secondary);
+    border-radius: 12px;
+    background: white;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .match-mode-btn.active { background: var(--secondary); color: white; }
+
+  .match-prompt {
+    background: white;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 100px;
+    font-weight: 900;
+    color: var(--primary);
+    cursor: pointer;
+    transition: transform 0.15s;
+    user-select: none;
+  }
+
+  .match-prompt:hover { transform: scale(1.04); }
+
+  .match-prompt .match-tap-hint {
+    font-size: 14px;
+    color: #aaa;
+    font-weight: 600;
+    position: absolute;
+    bottom: 10px;
+  }
+
+  .match-choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+  }
+
+  .match-choice {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--dark);
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .match-choice:hover { transform: translateY(-3px); border-color: var(--secondary); }
+  .match-choice.correct { border-color: var(--green); background: #f0fdf4; animation: popIn 0.4s ease; }
+  .match-choice.wrong { border-color: #EF4444; background: #fef2f2; animation: shake 0.4s ease; }
+
+  @keyframes popIn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
+  .match-score {
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    display: flex;
+    gap: 20px;
+  }
+
+  .match-score .correct-count { color: var(--green); }
+  .match-score .wrong-count { color: #EF4444; }
+
+  .match-celebration {
+    font-size: 48px;
+    min-height: 60px;
+    text-align: center;
+    animation: popIn 0.5s ease;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="app-icon">🌟</div>
+  <div class="app-title">LEARN</div>
+</div>
+
+<!-- SECTION NAV -->
+<div class="section-nav" id="sectionNav">
+  <button class="nav-btn active" onclick="showSection('alpha')" data-sec="alpha">
+    <span class="nav-icon">🔤</span>ABC
+  </button>
+  <button class="nav-btn" onclick="showSection('writing')" data-sec="writing">
+    <span class="nav-icon">✏️</span>WRITE
+  </button>
+  <button class="nav-btn" onclick="showSection('trace')" data-sec="trace">
+    <span class="nav-icon">✏️👆</span>TRACE
+  </button>
+  <button class="nav-btn" onclick="showSection('numbers')" data-sec="numbers">
+    <span class="nav-icon">🔢</span>123
+  </button>
+  <button class="nav-btn" onclick="showSection('numwrite')" data-sec="numwrite">
+    <span class="nav-icon">📝</span>WRITE #
+  </button>
+  <button class="nav-btn" onclick="showSection('numtrace')" data-sec="numtrace">
+    <span class="nav-icon">🔢👆</span>TRACE #
+  </button>
+  <button class="nav-btn" onclick="showSection('phonics')" data-sec="phonics">
+    <span class="nav-icon">🗣️</span>SOUNDS
+  </button>
+  <button class="nav-btn" onclick="showSection('builder')" data-sec="builder">
+    <span class="nav-icon">🧩</span>BUILD
+  </button>
+  <button class="nav-btn" onclick="showSection('match')" data-sec="match">
+    <span class="nav-icon">🎯</span>MATCH
+  </button>
+</div>
+
+<div class="main">
+
+  <!-- ===== SECTION: ALPHABET ===== -->
+  <div class="section active" id="alpha">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="enBtn" onclick="setLang('en')">
+        <span class="flag">English</span>
+        <span id="enSpeak" style="font-size:22px">🔊</span>
+      </button>
+      <button class="lang-btn" id="esBtn" onclick="setLang('es')">
+        <span class="flag">Español</span>
+        <span id="esSpeak" style="font-size:22px">🔊</span>
+      </button>
+    </div>
+    <div class="alpha-grid" id="alphaGrid"></div>
+  </div>
+
+  <!-- ===== SECTION: LETTER WRITING ===== -->
+  <div class="section" id="writing">
+    <div class="section-header">
+      <span class="big-emoji">✏️</span>
+    </div>
+    <div class="letter-selector" id="letterSelector"></div>
+    <div class="canvas-container">
+      <div class="write-canvas-wrap">
+        <div class="write-label">⬆️ BIG</div>
+        <canvas id="canvasUpper" width="240" height="240"></canvas>
+        <div class="write-controls">
+          <button class="ctrl-btn play-btn" onclick="playWriting('upper')">▶️ SHOW</button>
+        </div>
+      </div>
+      <div class="write-canvas-wrap">
+        <div class="write-label">⬇️ small</div>
+        <canvas id="canvasLower" width="240" height="240"></canvas>
+        <div class="write-controls">
+          <button class="ctrl-btn play-btn" onclick="playWriting('lower')">▶️ SHOW</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION: NUMBERS ===== -->
+  <div class="section" id="numbers">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="enBtnNum" onclick="setNumLang('en')">
+        <span class="flag">English</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+      <button class="lang-btn" id="esBtnNum" onclick="setNumLang('es')">
+        <span class="flag">Español</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+    </div>
+    <div class="numbers-grid" id="numbersGrid"></div>
+  </div>
+
+  <!-- ===== SECTION: NUMBER WRITING ===== -->
+  <div class="section" id="numwrite">
+    <div class="section-header">
+      <span class="big-emoji">📝</span>
+    </div>
+    <div class="num-selector" id="numSelector"></div>
+    <div class="canvas-container">
+      <div class="write-canvas-wrap">
+        <canvas id="canvasNum" width="280" height="280"></canvas>
+        <div class="write-controls">
+          <button class="ctrl-btn play-btn" onclick="playNumWriting()">▶️ SHOW</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION: PHONICS ===== -->
+  <div class="section" id="phonics">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="enBtnPh" onclick="setPhLang('en')">
+        <span class="flag">English</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+      <button class="lang-btn" id="esBtnPh" onclick="setPhLang('es')">
+        <span class="flag">Español</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+    </div>
+    <div id="phonicsGrid"></div>
+  </div>
+
+  <!-- ===== SECTION: WORD BUILDER ===== -->
+  <div class="section" id="builder">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="enBtnBld" onclick="setBldLang('en')">
+        <span class="flag">English</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+      <button class="lang-btn" id="esBtnBld" onclick="setBldLang('es')">
+        <span class="flag">Español</span>
+        <span style="font-size:22px">🔊</span>
+      </button>
+    </div>
+    <div class="builder-display">
+      <div class="builder-syllables" id="builderChips"><span style="color:#ccc;font-size:18px">tap syllables below ↓</span></div>
+    </div>
+    <div class="builder-actions">
+      <button class="builder-btn clear" onclick="clearBuilder()">✖ CLEAR</button>
+    </div>
+    <div id="builderGrid"></div>
+  </div>
+
+  <!-- ===== SECTION: TRACING ===== -->
+  <div class="section" id="trace">
+    <div class="section-header"><span class="big-emoji">✏️👆</span></div>
+    <div class="trace-container">
+      <div class="letter-selector" id="traceLetterSelector"></div>
+
+      <!-- WATCH pane -->
+      <div style="text-align:center;margin-bottom:4px">
+        <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#FF6B35">👀 WATCH</span>
+      </div>
+      <div class="trace-canvas-wrap" style="margin-bottom:16px">
+        <canvas id="traceGuide" width="280" height="280"></canvas>
+      </div>
+      <div style="text-align:center;margin-bottom:4px">
+        <button class="ctrl-btn play-btn" onclick="showTraceGuide()" style="margin-bottom:8px">▶️ SHOW</button>
+      </div>
+
+      <!-- DRAW pane -->
+      <div style="text-align:center;margin-bottom:4px">
+        <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#3B82F6">✏️ NOW YOU</span>
+      </div>
+      <div class="trace-canvas-wrap">
+        <canvas id="traceCanvas" width="280" height="280"></canvas>
+      </div>
+      <div class="trace-controls">
+        <button class="ctrl-btn" onclick="clearTrace()" style="background:#eee;color:#333">✖ CLEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION: NUMBER TRACING ===== -->
+  <div class="section" id="numtrace">
+    <div class="section-header"><span class="big-emoji">🔢👆</span></div>
+    <div class="trace-container">
+      <div class="letter-selector" id="traceNumSelector"></div>
+
+      <!-- WATCH pane -->
+      <div style="text-align:center;margin-bottom:4px">
+        <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#FF6B35">👀 WATCH</span>
+      </div>
+      <div class="trace-canvas-wrap" style="margin-bottom:16px">
+        <canvas id="traceNumGuide" width="280" height="280"></canvas>
+      </div>
+      <div style="text-align:center;margin-bottom:4px">
+        <button class="ctrl-btn play-btn" onclick="showNumTraceGuide()" style="margin-bottom:8px">▶️ SHOW</button>
+      </div>
+
+      <!-- DRAW pane -->
+      <div style="text-align:center;margin-bottom:4px">
+        <span style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#3B82F6">✏️ NOW YOU</span>
+      </div>
+      <div class="trace-canvas-wrap">
+        <canvas id="traceNumCanvas" width="280" height="280"></canvas>
+      </div>
+      <div class="trace-controls">
+        <button class="ctrl-btn" onclick="clearNumTrace()" style="background:#eee;color:#333">✖ CLEAR</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section" id="match">
+    <div class="match-container">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="enBtnMatch" onclick="setMatchLang('en')">
+          <span class="flag">English</span>
+          <span style="font-size:22px">🔊</span>
+        </button>
+        <button class="lang-btn" id="esBtnMatch" onclick="setMatchLang('es')">
+          <span class="flag">Español</span>
+          <span style="font-size:22px">🔊</span>
+        </button>
+      </div>
+      <div class="match-mode-btns">
+        <button class="match-mode-btn active" id="modeBtnLetters" onclick="setMatchMode('letters')">🔤 ABC</button>
+        <button class="match-mode-btn" id="modeBtnNumbers" onclick="setMatchMode('numbers')">🔢 123</button>
+      </div>
+      <div class="match-score">
+        <span>✅ <span class="correct-count" id="matchCorrect">0</span></span>
+        <span>❌ <span class="wrong-count" id="matchWrong">0</span></span>
+      </div>
+      <div class="match-prompt" id="matchPrompt" onclick="speakMatchPrompt()">?</div>
+      <div class="match-celebration" id="matchCelebration"></div>
+      <div class="match-choices" id="matchChoices"></div>
+    </div>
+  </div>
+
+</div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+    <div class="wave-bar"></div>
+  </div>
+  <div class="playing-text" id="playingText">Playing...</div>
+</div>
+
+<script>
+// ===== STATE =====
+let currentLang = 'en';
+let numLang = 'en';
+let selectedLetter = 'A';
+let selectedNum = 0;
+let writeSpeed = 1; // 1=slow, 2=fast
+let writeAnim = null;
+let synth = window.speechSynthesis;
+
+// ===== DATA =====
+const alphabetEN = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+const alphabetES = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+// Numbers
+const numbersEN = {
+  0:'zero',1:'one',2:'two',3:'three',4:'four',5:'five',6:'six',7:'seven',8:'eight',9:'nine',10:'ten',
+  11:'eleven',12:'twelve',13:'thirteen',14:'fourteen',15:'fifteen',16:'sixteen',17:'seventeen',18:'eighteen',19:'nineteen',20:'twenty',
+  21:'twenty one',22:'twenty two',23:'twenty three',24:'twenty four',25:'twenty five',26:'twenty six',27:'twenty seven',28:'twenty eight',29:'twenty nine',30:'thirty',
+  31:'thirty one',32:'thirty two',33:'thirty three',34:'thirty four',35:'thirty five',36:'thirty six',37:'thirty seven',38:'thirty eight',39:'thirty nine',40:'forty',
+  41:'forty one',42:'forty two',43:'forty three',44:'forty four',45:'forty five',46:'forty six',47:'forty seven',48:'forty eight',49:'forty nine',50:'fifty',
+  51:'fifty one',52:'fifty two',53:'fifty three',54:'fifty four',55:'fifty five',56:'fifty six',57:'fifty seven',58:'fifty eight',59:'fifty nine',60:'sixty',
+  61:'sixty one',62:'sixty two',63:'sixty three',64:'sixty four',65:'sixty five',66:'sixty six',67:'sixty seven',68:'sixty eight',69:'sixty nine',70:'seventy',
+  71:'seventy one',72:'seventy two',73:'seventy three',74:'seventy four',75:'seventy five',76:'seventy six',77:'seventy seven',78:'seventy eight',79:'seventy nine',80:'eighty',
+  81:'eighty one',82:'eighty two',83:'eighty three',84:'eighty four',85:'eighty five',86:'eighty six',87:'eighty seven',88:'eighty eight',89:'eighty nine',90:'ninety',
+  91:'ninety one',92:'ninety two',93:'ninety three',94:'ninety four',95:'ninety five',96:'ninety six',97:'ninety seven',98:'ninety eight',99:'ninety nine',100:'one hundred',
+  200:'two hundred',300:'three hundred',400:'four hundred',500:'five hundred',
+  1000:'one thousand',10000:'ten thousand',100000:'one hundred thousand',1000000:'one million'
+};
+
+const numbersES = {
+  0:'cero',1:'uno',2:'dos',3:'tres',4:'cuatro',5:'cinco',6:'seis',7:'siete',8:'ocho',9:'nueve',10:'diez',
+  11:'once',12:'doce',13:'trece',14:'catorce',15:'quince',16:'dieciséis',17:'diecisiete',18:'dieciocho',19:'diecinueve',20:'veinte',
+  21:'veintiuno',22:'veintidós',23:'veintitrés',24:'veinticuatro',25:'veinticinco',26:'veintiséis',27:'veintisiete',28:'veintiocho',29:'veintinueve',30:'treinta',
+  31:'treinta y uno',32:'treinta y dos',33:'treinta y tres',34:'treinta y cuatro',35:'treinta y cinco',36:'treinta y seis',37:'treinta y siete',38:'treinta y ocho',39:'treinta y nueve',40:'cuarenta',
+  41:'cuarenta y uno',42:'cuarenta y dos',43:'cuarenta y tres',44:'cuarenta y cuatro',45:'cuarenta y cinco',46:'cuarenta y seis',47:'cuarenta y siete',48:'cuarenta y ocho',49:'cuarenta y nueve',50:'cincuenta',
+  51:'cincuenta y uno',52:'cincuenta y dos',53:'cincuenta y tres',54:'cincuenta y cuatro',55:'cincuenta y cinco',56:'cincuenta y seis',57:'cincuenta y siete',58:'cincuenta y ocho',59:'cincuenta y nueve',60:'sesenta',
+  61:'sesenta y uno',62:'sesenta y dos',63:'sesenta y tres',64:'sesenta y cuatro',65:'sesenta y cinco',66:'sesenta y seis',67:'sesenta y siete',68:'sesenta y ocho',69:'sesenta y nueve',70:'setenta',
+  71:'setenta y uno',72:'setenta y dos',73:'setenta y tres',74:'setenta y cuatro',75:'setenta y cinco',76:'setenta y seis',77:'setenta y siete',78:'setenta y ocho',79:'setenta y nueve',80:'ochenta',
+  81:'ochenta y uno',82:'ochenta y dos',83:'ochenta y tres',84:'ochenta y cuatro',85:'ochenta y cinco',86:'ochenta y seis',87:'ochenta y siete',88:'ochenta y ocho',89:'ochenta y nueve',90:'noventa',
+  91:'noventa y uno',92:'noventa y dos',93:'noventa y tres',94:'noventa y cuatro',95:'noventa y cinco',96:'noventa y seis',97:'noventa y siete',98:'noventa y ocho',99:'noventa y nueve',100:'cien',
+  200:'doscientos',300:'trescientos',400:'cuatrocientos',500:'quinientos',
+  1000:'mil',10000:'diez mil',100000:'cien mil',1000000:'un millón'
+};
+
+// ===== SPEECH =====
+function speak(text, lang, onDone) {
+  synth.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang === 'es' ? 'es-MX' : 'en-US';
+  utter.rate = 0.85;
+  utter.pitch = 1.1;
+  const bar = document.getElementById('playingBar');
+  const txt = document.getElementById('playingText');
+  if (bar) bar.classList.add('show');
+  if (txt) txt.textContent = '🔊 ' + text;
+  utter.onend = () => {
+    if (bar) bar.classList.remove('show');
+    if (onDone) onDone();
+  };
+  synth.speak(utter);
+}
+
+function speakLetter(letter, lang) {
+  const phonetics = {
+    'A':'A','B':'B','C':'C','D':'D','E':'E','F':'F','G':'G','H':'H','I':'I',
+    'J':'J','K':'K','L':'L','M':'M','N':'N','O':'O','P':'P','Q':'Q','R':'R',
+    'S':'S','T':'T','U':'U','V':'V','W':'W','X':'X','Y':'Y','Z':'Z'
+  };
+  const phoneticsES = {
+    'A':'ah','B':'beh','C':'seh','D':'deh','E':'eh','F':'efeh','G':'heh','H':'acheh','I':'i',
+    'J':'hota','K':'kah','L':'eleh','M':'emeh','N':'eneh','Ñ':'enyeh','O':'oh','P':'peh','Q':'kú',
+    'R':'ereh','S':'ese','T':'teh','U':'u','V':'uve','W':'doble uve','X':'equis','Y':'i griega','Z':'zeta'
+  };
+
+  const text = lang === 'es' ? (phoneticsES[letter] || letter) : (phonetics[letter] || letter);
+
+  // Letter I needs a slower rate so it sounds full and clear, not clipped
+  const slowLetters = ['I'];
+  if (lang === 'en' && slowLetters.includes(letter)) {
+    synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 0.4;
+    utter.pitch = 1.1;
+    const bar = document.getElementById('playingBar');
+    const txt = document.getElementById('playingText');
+    if (bar) bar.classList.add('show');
+    if (txt) txt.textContent = '🔊 ' + text;
+    utter.onend = () => { if (bar) bar.classList.remove('show'); };
+    synth.speak(utter);
+  } else {
+    speak(text, lang);
+  }
+}
+
+// ===== ALPHABET =====
+function buildAlpha() {
+  const grid = document.getElementById('alphaGrid');
+  const alphabet = currentLang === 'es' ? alphabetES : alphabetEN;
+  grid.innerHTML = '';
+  alphabet.forEach(letter => {
+    const card = document.createElement('div');
+    card.className = 'letter-card' + (letter === 'Ñ' ? ' letter-special' : '');
+    card.innerHTML = `
+      <div class="letter-upper" style="${letter==='Ñ'?'color:#A855F7':''}">${letter}</div>
+      <div class="letter-lower" style="${letter==='Ñ'?'color:#A855F7':''}">${letter.toLowerCase()}</div>
+      <div class="sound-wave">🔊</div>
+    `;
+    card.onclick = () => {
+      document.querySelectorAll('.letter-card').forEach(c => c.classList.remove('playing'));
+      card.classList.add('playing');
+      speakLetter(letter, currentLang);
+      setTimeout(() => card.classList.remove('playing'), 1500);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('enBtn').classList.toggle('active', lang === 'en');
+  document.getElementById('esBtn').classList.toggle('active', lang === 'es');
+  // Announce the language
+  if (lang === 'en') speak('English', 'en');
+  else speak('Español', 'es');
+  setTimeout(buildAlpha, 600);
+}
+
+// ===== LETTER WRITING =====
+function buildLetterSelector() {
+  const container = document.getElementById('letterSelector');
+  container.innerHTML = '';
+  alphabetEN.forEach(letter => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-select-btn' + (letter === selectedLetter ? ' active' : '');
+    btn.textContent = letter;
+    btn.onclick = () => {
+      selectedLetter = letter;
+      document.querySelectorAll('.letter-select-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      clearCanvas('canvasUpper');
+      clearCanvas('canvasLower');
+    };
+    container.appendChild(btn);
+  });
+}
+
+function clearCanvas(id) {
+  const canvas = document.getElementById(id);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Draw guide lines
+  ctx.strokeStyle = '#e5e7eb';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5,5]);
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height * 0.25);
+  ctx.lineTo(canvas.width, canvas.height * 0.25);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height * 0.5);
+  ctx.lineTo(canvas.width, canvas.height * 0.5);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height * 0.75);
+  ctx.lineTo(canvas.width, canvas.height * 0.75);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// ---- Bezier curve helper ----
+// Each stroke is now an array of commands: { type:'M'|'L'|'C'|'Q', ... }
+// M = moveto, L = lineto, C = cubic bezier (cp1, cp2, end), Q = quadratic (cp, end)
+// We convert these to dense point arrays for the animator.
+
+function bezierPoints(cmds, w, h, steps=60) {
+  // Scale a point
+  const p = (px, py) => ({ x: px * w, y: py * h });
+  let pts = [];
+  let cur = { x: 0, y: 0 };
+
+  cmds.forEach(cmd => {
+    if (cmd.type === 'M') {
+      const pt = p(cmd.x, cmd.y);
+      pts.push({ ...pt, lift: true });
+      cur = pt;
+    } else if (cmd.type === 'L') {
+      const pt = p(cmd.x, cmd.y);
+      // Use enough steps so short lines take same time as curves
+      const dx = pt.x - cur.x, dy = pt.y - cur.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      const lineSteps = Math.max(steps, Math.round(dist / 2));
+      for (let i = 1; i <= lineSteps; i++) {
+        pts.push({
+          x: cur.x + dx * (i / lineSteps),
+          y: cur.y + dy * (i / lineSteps),
+          lift: false
+        });
+      }
+      cur = pt;
+    } else if (cmd.type === 'Q') {
+      const cp = p(cmd.cx, cmd.cy);
+      const ep = p(cmd.x, cmd.y);
+      for (let i = 1; i <= steps; i++) {
+        const t = i / steps;
+        const mt = 1 - t;
+        pts.push({
+          x: mt*mt*cur.x + 2*mt*t*cp.x + t*t*ep.x,
+          y: mt*mt*cur.y + 2*mt*t*cp.y + t*t*ep.y,
+          lift: false
+        });
+      }
+      cur = ep;
+    } else if (cmd.type === 'C') {
+      const cp1 = p(cmd.cx1, cmd.cy1);
+      const cp2 = p(cmd.cx2, cmd.cy2);
+      const ep = p(cmd.x, cmd.y);
+      for (let i = 1; i <= steps; i++) {
+        const t = i / steps;
+        const mt = 1 - t;
+        pts.push({
+          x: mt*mt*mt*cur.x + 3*mt*mt*t*cp1.x + 3*mt*t*t*cp2.x + t*t*t*ep.x,
+          y: mt*mt*mt*cur.y + 3*mt*mt*t*cp1.y + 3*mt*t*t*cp2.y + t*t*t*ep.y,
+          lift: false
+        });
+      }
+      cur = ep;
+    }
+  });
+  return pts;
+}
+
+// letterStrokes now returns an array of bezier-point arrays (one per stroke)
+const letterStrokes = {
+  'A': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.5,y:.08},{type:'L',x:.15,y:.92}],w,h),
+    bezierPoints([{type:'M',x:.5,y:.08},{type:'L',x:.85,y:.92}],w,h),
+    bezierPoints([{type:'M',x:.28,y:.6},{type:'L',x:.72,y:.6}],w,h),
+  ],
+  'B': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.1},
+      {type:'C',cx1:.7,cy1:.1,cx2:.78,cy2:.15,x:.78,y:.28},
+      {type:'C',cx1:.78,cy1:.41,cx2:.68,cy2:.48,x:.22,y:.5}
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.5},
+      {type:'C',cx1:.72,cy1:.5,cx2:.84,cy2:.57,x:.84,y:.7},
+      {type:'C',cx1:.84,cy1:.83,cx2:.72,cy2:.9,x:.22,y:.9}
+    ],w,h),
+  ],
+  'C': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.82,y:.25},
+      {type:'C',cx1:.72,cy1:.1,cx2:.58,cy2:.08,x:.45,y:.08},
+      {type:'C',cx1:.22,cy1:.08,cx2:.1,cy2:.22,x:.1,y:.5},
+      {type:'C',cx1:.1,cy1:.78,cx2:.22,cy2:.92,x:.45,y:.92},
+      {type:'C',cx1:.58,cy1:.92,cx2:.72,cy2:.9,x:.82,y:.75},
+    ],w,h),
+  ],
+  'D': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.1},
+      {type:'C',cx1:.6,cy1:.1,cx2:.85,cy2:.25,x:.85,y:.5},
+      {type:'C',cx1:.85,cy1:.75,cx2:.6,cy2:.9,x:.22,y:.9}
+    ],w,h),
+  ],
+  'E': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.82,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.5},{type:'L',x:.72,y:.5}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.9},{type:'L',x:.82,y:.9}],w,h),
+  ],
+  'F': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.82,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.5},{type:'L',x:.72,y:.5}],w,h),
+  ],
+  'G': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.82,y:.25},
+      {type:'C',cx1:.72,cy1:.1,cx2:.58,cy2:.08,x:.45,y:.08},
+      {type:'C',cx1:.22,cy1:.08,cx2:.1,cy2:.22,x:.1,y:.5},
+      {type:'C',cx1:.1,cy1:.78,cx2:.22,cy2:.92,x:.45,y:.92},
+      {type:'C',cx1:.62,cy1:.92,cx2:.82,cy2:.82,x:.82,y:.65},
+      {type:'L',x:.82,y:.52},
+      {type:'L',x:.55,y:.52},
+    ],w,h),
+  ],
+  'H': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.2,y:.1},{type:'L',x:.2,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.8,y:.1},{type:'L',x:.8,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.2,y:.5},{type:'L',x:.8,y:.5}],w,h),
+  ],
+  'I': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.32,y:.1},{type:'L',x:.68,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.5,y:.1},{type:'L',x:.5,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.32,y:.9},{type:'L',x:.68,y:.9}],w,h),
+  ],
+  'J': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.32,y:.1},{type:'L',x:.68,y:.1}],w,h),
+    bezierPoints([
+      {type:'M',x:.52,y:.1},{type:'L',x:.52,y:.72},
+      {type:'C',cx1:.52,cy1:.88,cx2:.42,cy2:.94,x:.28,y:.9},
+      {type:'C',cx1:.18,cy1:.86,cx2:.16,cy2:.78,x:.17,y:.72}
+    ],w,h),
+  ],
+  'K': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.2,y:.1},{type:'L',x:.2,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.78,y:.1},{type:'L',x:.22,y:.5}],w,h),
+    bezierPoints([{type:'M',x:.38,y:.62},{type:'L',x:.8,y:.9}],w,h),
+  ],
+  'L': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9},{type:'L',x:.8,y:.9}],w,h),
+  ],
+  'M': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.14,y:.9},{type:'L',x:.14,y:.1},
+      {type:'L',x:.5,y:.55},
+      {type:'L',x:.86,y:.1},{type:'L',x:.86,y:.9}
+    ],w,h),
+  ],
+  'N': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.9},{type:'L',x:.18,y:.1},{type:'L',x:.82,y:.9},{type:'L',x:.82,y:.1}],w,h),
+  ],
+  'Ñ': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.9},{type:'L',x:.18,y:.15},{type:'L',x:.82,y:.88},{type:'L',x:.82,y:.15}],w,h),
+    bezierPoints([
+      {type:'M',x:.3,y:.07},
+      {type:'C',cx1:.35,cy1:.0,cx2:.42,cy2:.0,x:.5,y:.07},
+      {type:'C',cx1:.58,cy1:.14,cx2:.65,cy2:.14,x:.7,y:.07}
+    ],w,h),
+  ],
+  'O': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.08},
+      {type:'C',cx1:.82,cy1:.08,cx2:.92,cy2:.25,x:.92,y:.5},
+      {type:'C',cx1:.92,cy1:.75,cx2:.82,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.18,cy1:.92,cx2:.08,cy2:.75,x:.08,y:.5},
+      {type:'C',cx1:.08,cy1:.25,cx2:.18,cy2:.08,x:.5,y:.08},
+    ],w,h),
+  ],
+  'P': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.1},
+      {type:'C',cx1:.7,cy1:.1,cx2:.82,cy2:.18,x:.82,y:.3},
+      {type:'C',cx1:.82,cy1:.44,cx2:.7,cy2:.52,x:.22,y:.52}
+    ],w,h),
+  ],
+  'Q': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.08},
+      {type:'C',cx1:.82,cy1:.08,cx2:.92,cy2:.25,x:.92,y:.5},
+      {type:'C',cx1:.92,cy1:.75,cx2:.82,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.18,cy1:.92,cx2:.08,cy2:.75,x:.08,y:.5},
+      {type:'C',cx1:.08,cy1:.25,cx2:.18,cy2:.08,x:.5,y:.08},
+    ],w,h),
+    bezierPoints([{type:'M',x:.6,y:.72},{type:'L',x:.88,y:.95}],w,h),
+  ],
+  'R': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.1},{type:'L',x:.22,y:.9}],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.1},
+      {type:'C',cx1:.7,cy1:.1,cx2:.82,cy2:.18,x:.82,y:.3},
+      {type:'C',cx1:.82,cy1:.44,cx2:.7,cy2:.52,x:.22,y:.52}
+    ],w,h),
+    bezierPoints([{type:'M',x:.48,y:.52},{type:'L',x:.82,y:.9}],w,h),
+  ],
+  'S': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.8,y:.22},
+      {type:'C',cx1:.8,cy1:.1,cx2:.65,cy2:.08,x:.5,y:.08},
+      {type:'C',cx1:.28,cy1:.08,cx2:.18,cy2:.16,x:.18,y:.3},
+      {type:'C',cx1:.18,cy1:.44,cx2:.32,cy2:.5,x:.5,y:.5},
+      {type:'C',cx1:.68,cy1:.5,cx2:.82,cy2:.56,x:.82,y:.7},
+      {type:'C',cx1:.82,cy1:.84,cx2:.72,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.28,cy1:.92,cx2:.18,cy2:.88,x:.18,y:.78},
+    ],w,h),
+  ],
+  'T': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.1,y:.1},{type:'L',x:.9,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.5,y:.1},{type:'L',x:.5,y:.9}],w,h),
+  ],
+  'U': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.18,y:.1},{type:'L',x:.18,y:.65},
+      {type:'C',cx1:.18,cy1:.88,cx2:.3,cy2:.94,x:.5,y:.94},
+      {type:'C',cx1:.7,cy1:.94,cx2:.82,cy2:.88,x:.82,y:.65},
+      {type:'L',x:.82,y:.1}
+    ],w,h),
+  ],
+  'V': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.15,y:.1},{type:'L',x:.5,y:.9},{type:'L',x:.85,y:.1}],w,h),
+  ],
+  'W': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.1,y:.1},{type:'L',x:.28,y:.9},
+      {type:'L',x:.5,y:.52},
+      {type:'L',x:.72,y:.9},{type:'L',x:.9,y:.1}
+    ],w,h),
+  ],
+  'X': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.15,y:.1},{type:'L',x:.85,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.85,y:.1},{type:'L',x:.15,y:.9}],w,h),
+  ],
+  'Y': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.15,y:.1},{type:'L',x:.5,y:.52}],w,h),
+    bezierPoints([{type:'M',x:.85,y:.1},{type:'L',x:.5,y:.52},{type:'L',x:.5,y:.9}],w,h),
+  ],
+  'Z': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.15,y:.1},{type:'L',x:.85,y:.1},{type:'L',x:.15,y:.9},{type:'L',x:.85,y:.9}],w,h),
+  ],
+};
+
+// ---- Lowercase letter strokes ----
+Object.assign(letterStrokes, {
+  'a': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.72,y:.35},
+      {type:'C',cx1:.72,cy1:.2,cx2:.6,cy2:.15,x:.48,y:.15},
+      {type:'C',cx1:.25,cy1:.15,cx2:.15,cy2:.3,x:.15,y:.5},
+      {type:'C',cx1:.15,cy1:.7,cx2:.28,cy2:.85,x:.5,y:.85},
+      {type:'C',cx1:.65,cy1:.85,cx2:.72,cy2:.75,x:.72,y:.65},
+    ],w,h),
+    bezierPoints([{type:'M',x:.72,y:.15},{type:'L',x:.72,y:.85}],w,h),
+  ],
+  'b': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.25,y:.08},{type:'L',x:.25,y:.92}],w,h),
+    bezierPoints([
+      {type:'M',x:.25,y:.68},
+      {type:'C',cx1:.25,cy1:.54,cx2:.36,cy2:.44,x:.5,y:.44},
+      {type:'C',cx1:.68,cy1:.44,cx2:.78,cy2:.56,x:.78,y:.68},
+      {type:'C',cx1:.78,cy1:.82,cx2:.66,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.34,cy1:.92,cx2:.25,cy2:.82,x:.25,y:.72},
+    ],w,h),
+  ],
+  'c': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.76,y:.44},
+      {type:'C',cx1:.72,cy1:.36,cx2:.62,cy2:.32,x:.5,y:.32},
+      {type:'C',cx1:.3,cy1:.32,cx2:.2,cy2:.44,x:.2,y:.58},
+      {type:'C',cx1:.2,cy1:.72,cx2:.32,cy2:.84,x:.5,y:.84},
+      {type:'C',cx1:.62,cy1:.84,cx2:.72,cy2:.78,x:.76,y:.7},
+    ],w,h),
+  ],
+  'd': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.75,y:.62},
+      {type:'C',cx1:.75,cy1:.48,cx2:.64,cy2:.38,x:.5,y:.38},
+      {type:'C',cx1:.32,cy1:.38,cx2:.22,cy2:.5,x:.22,y:.62},
+      {type:'C',cx1:.22,cy1:.76,cx2:.34,cy2:.86,x:.5,y:.86},
+      {type:'C',cx1:.66,cy1:.86,cx2:.75,cy2:.76,x:.75,y:.65},
+    ],w,h),
+    bezierPoints([{type:'M',x:.75,y:.08},{type:'L',x:.75,y:.92}],w,h),
+  ],
+  'e': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.2,y:.58},{type:'L',x:.8,y:.58}],w,h),
+    bezierPoints([
+      {type:'M',x:.8,y:.58},
+      {type:'C',cx1:.8,cy1:.44,cx2:.68,cy2:.32,x:.5,y:.32},
+      {type:'C',cx1:.3,cy1:.32,cx2:.2,cy2:.44,x:.2,y:.58},
+      {type:'C',cx1:.2,cy1:.74,cx2:.32,cy2:.84,x:.5,y:.84},
+      {type:'C',cx1:.64,cy1:.84,cx2:.74,cy2:.76,x:.8,y:.68},
+    ],w,h),
+  ],
+  'f': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.92},
+      {type:'L',x:.5,y:.28},
+      {type:'C',cx1:.5,cy1:.12,cx2:.58,cy2:.08,x:.68,y:.08},
+      {type:'C',cx1:.78,cy1:.08,cx2:.82,cy2:.14,x:.82,y:.22},
+    ],w,h),
+    bezierPoints([{type:'M',x:.28,y:.45},{type:'L',x:.7,y:.45}],w,h),
+  ],
+  'g': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.76,y:.30},
+      {type:'C',cx1:.76,cy1:.20,cx2:.66,cy2:.14,x:.52,y:.14},
+      {type:'C',cx1:.34,cy1:.14,cx2:.24,cy2:.24,x:.24,y:.36},
+      {type:'C',cx1:.24,cy1:.50,cx2:.36,cy2:.58,x:.52,y:.58},
+      {type:'C',cx1:.66,cy1:.58,cx2:.76,cy2:.48,x:.76,y:.38},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.76,y:.14},{type:'L',x:.76,y:.78},
+      {type:'C',cx1:.76,cy1:.92,cx2:.64,cy2:.97,x:.5,y:.96},
+      {type:'C',cx1:.34,cy1:.95,cx2:.24,cy2:.88,x:.22,y:.80},
+    ],w,h),
+  ],
+  'h': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.08},{type:'L',x:.22,y:.92}],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.55},
+      {type:'C',cx1:.22,cy1:.42,cx2:.34,cy2:.34,x:.5,y:.34},
+      {type:'C',cx1:.66,cy1:.34,cx2:.76,cy2:.44,x:.76,y:.55},
+      {type:'L',x:.76,y:.92},
+    ],w,h),
+  ],
+  'i': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.5,y:.35},{type:'L',x:.5,y:.88}],w,h),
+    bezierPoints([{type:'M',x:.5,y:.15},{type:'L',x:.5,y:.2}],w,h),
+  ],
+  'j': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.55,y:.35},{type:'L',x:.55,y:.78},
+      {type:'C',cx1:.55,cy1:.92,cx2:.42,cy2:.98,x:.28,y:.92},
+      {type:'C',cx1:.18,cy1:.88,cx2:.15,cy2:.8,x:.15,y:.72},
+    ],w,h),
+    bezierPoints([{type:'M',x:.55,y:.15},{type:'L',x:.55,y:.2}],w,h),
+  ],
+  'k': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.22,y:.08},{type:'L',x:.22,y:.92}],w,h),
+    bezierPoints([{type:'M',x:.76,y:.18},{type:'L',x:.22,y:.55}],w,h),
+    bezierPoints([{type:'M',x:.22,y:.55},{type:'L',x:.78,y:.92}],w,h),
+  ],
+  'l': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.5,y:.08},{type:'L',x:.5,y:.9}],w,h),
+  ],
+  'm': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.1,y:.88},{type:'L',x:.1,y:.35}],w,h),
+    bezierPoints([
+      {type:'M',x:.1,y:.46},
+      {type:'C',cx1:.1,cy1:.34,cx2:.2,cy2:.28,x:.32,y:.28},
+      {type:'C',cx1:.44,cy1:.28,cx2:.5,cy2:.36,x:.5,y:.46},
+      {type:'L',x:.5,y:.88},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.5,y:.46},
+      {type:'C',cx1:.5,cy1:.34,cx2:.6,cy2:.28,x:.72,y:.28},
+      {type:'C',cx1:.84,cy1:.28,cx2:.88,cy2:.36,x:.88,y:.46},
+      {type:'L',x:.88,y:.88},
+    ],w,h),
+  ],
+  'n': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.2,y:.88},{type:'L',x:.2,y:.35}],w,h),
+    bezierPoints([
+      {type:'M',x:.2,y:.48},
+      {type:'C',cx1:.2,cy1:.34,cx2:.32,cy2:.28,x:.5,y:.28},
+      {type:'C',cx1:.68,cy1:.28,cx2:.78,cy2:.38,x:.78,y:.5},
+      {type:'L',x:.78,y:.88},
+    ],w,h),
+  ],
+  'o': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.32},
+      {type:'C',cx1:.72,cy1:.32,cx2:.82,cy2:.44,x:.82,y:.58},
+      {type:'C',cx1:.82,cy1:.72,cx2:.7,cy2:.84,x:.5,y:.84},
+      {type:'C',cx1:.3,cy1:.84,cx2:.18,cy2:.72,x:.18,y:.58},
+      {type:'C',cx1:.18,cy1:.44,cx2:.3,cy2:.32,x:.5,y:.32},
+    ],w,h),
+  ],
+  'p': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.25,y:.18},{type:'L',x:.25,y:.98}],w,h),
+    bezierPoints([
+      {type:'M',x:.25,y:.42},
+      {type:'C',cx1:.25,cy1:.26,cx2:.36,cy2:.18,x:.52,y:.18},
+      {type:'C',cx1:.7,cy1:.18,cx2:.78,cy2:.28,x:.78,y:.42},
+      {type:'C',cx1:.78,cy1:.56,cx2:.68,cy2:.64,x:.52,y:.64},
+      {type:'C',cx1:.36,cy1:.64,cx2:.25,cy2:.56,x:.25,y:.45},
+    ],w,h),
+  ],
+  'q': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.75,y:.42},
+      {type:'C',cx1:.75,cy1:.26,cx2:.64,cy2:.18,x:.5,y:.18},
+      {type:'C',cx1:.32,cy1:.18,cx2:.22,cy2:.28,x:.22,y:.42},
+      {type:'C',cx1:.22,cy1:.56,cx2:.34,cy2:.64,x:.5,y:.64},
+      {type:'C',cx1:.66,cy1:.64,cx2:.75,cy2:.56,x:.75,y:.45},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.75,y:.18},{type:'L',x:.75,y:.95},
+      {type:'L',x:.88,y:.82},
+    ],w,h),
+  ],
+  'r': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.25,y:.88},{type:'L',x:.25,y:.18}],w,h),
+    bezierPoints([
+      {type:'M',x:.25,y:.35},
+      {type:'C',cx1:.25,cy1:.2,cx2:.38,cy2:.15,x:.52,y:.15},
+      {type:'C',cx1:.62,cy1:.15,cx2:.7,cy2:.2,x:.75,y:.28},
+    ],w,h),
+  ],
+  's': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.76,y:.26},
+      {type:'C',cx1:.76,cy1:.16,cx2:.64,cy2:.12,x:.5,y:.12},
+      {type:'C',cx1:.3,cy1:.12,cx2:.2,cy2:.2,x:.2,y:.32},
+      {type:'C',cx1:.2,cy1:.44,cx2:.34,cy2:.5,x:.5,y:.5},
+      {type:'C',cx1:.66,cy1:.5,cx2:.8,cy2:.56,x:.8,y:.68},
+      {type:'C',cx1:.8,cy1:.8,cx2:.68,cy2:.88,x:.5,y:.88},
+      {type:'C',cx1:.3,cy1:.88,cx2:.2,cy2:.82,x:.2,y:.72},
+    ],w,h),
+  ],
+  't': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.5,y:.08},{type:'L',x:.5,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.25,y:.35},{type:'L',x:.75,y:.35}],w,h),
+  ],
+  'u': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.2,y:.18},{type:'L',x:.2,y:.65},
+      {type:'C',cx1:.2,cy1:.84,cx2:.32,cy2:.9,x:.5,y:.9},
+      {type:'C',cx1:.68,cy1:.9,cx2:.8,cy2:.84,x:.8,y:.65},
+      {type:'L',x:.8,y:.18},
+      {type:'L',x:.8,y:.9},
+    ],w,h),
+  ],
+  'v': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.18},{type:'L',x:.5,y:.9},{type:'L',x:.82,y:.18}],w,h),
+  ],
+  'w': (ctx,w,h) => [
+    bezierPoints([
+      {type:'M',x:.1,y:.18},{type:'L',x:.28,y:.88},
+      {type:'L',x:.5,y:.55},
+      {type:'L',x:.72,y:.88},{type:'L',x:.9,y:.18},
+    ],w,h),
+  ],
+  'x': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.18},{type:'L',x:.82,y:.88}],w,h),
+    bezierPoints([{type:'M',x:.82,y:.18},{type:'L',x:.18,y:.88}],w,h),
+  ],
+  'y': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.18},{type:'L',x:.5,y:.58}],w,h),
+    bezierPoints([{type:'M',x:.82,y:.18},{type:'L',x:.5,y:.58},{type:'L',x:.35,y:.92}],w,h),
+  ],
+  'z': (ctx,w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.18},{type:'L',x:.82,y:.18},{type:'L',x:.18,y:.88},{type:'L',x:.82,y:.88}],w,h),
+  ],
+});
+
+function getStrokesForLetter(letter, w, h) {
+  // Try exact key first (for lowercase), then uppercase fallback
+  const fn = letterStrokes[letter] || letterStrokes[letter.toUpperCase()];
+  if (!fn) return null;
+  return fn(null, w, h);
+}
+
+function animateStrokes(canvasId, strokes, color, callback) {
+  if (writeAnim) cancelAnimationFrame(writeAnim);
+  clearCanvas(canvasId);
+
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+
+  if (!strokes) {
+    // fallback fade-in
+    ctx.font = `bold ${h*0.75}px 'Baloo 2', cursive`;
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    let alpha = 0;
+    function fadeIn() {
+      alpha += 0.05;
+      ctx.clearRect(0,0,w,h);
+      ctx.globalAlpha = Math.min(alpha, 1);
+      ctx.fillText(canvasId.includes('Lower') ? selectedLetter.toLowerCase() : selectedLetter, w/2, h/2);
+      if (alpha < 1) writeAnim = requestAnimationFrame(fadeIn);
+      else { ctx.globalAlpha = 1; if(callback) callback(); }
+    }
+    fadeIn();
+    return;
+  }
+
+  // Strokes are already dense bezier point arrays — flatten them all into one list
+  let segments = [];
+  strokes.forEach((strokePts) => {
+    strokePts.forEach((pt, i) => {
+      segments.push({ x: pt.x, y: pt.y, lift: i === 0 ? true : pt.lift });
+    });
+  });
+
+  const total = segments.length;
+  // Each segment ≈ 4px apart (from bezierPoints STEP=4)
+  // slow = ~60px/s, fast = ~300px/s
+  const STEP = 4;
+  const pxPerMs = 0.07; // middle ground — comfortable to watch and copy
+  const msPerSeg = STEP / pxPerMs;
+
+  let drawn = 0;       // how many segments fully drawn
+  let lastTime = null;
+  let accumMs = 0;
+
+  function drawFrame(ts) {
+    if (lastTime === null) lastTime = ts;
+    const dt = ts - lastTime;
+    lastTime = ts;
+    accumMs += dt;
+
+    // Advance drawn count based on elapsed time
+    const advance = Math.floor(accumMs / msPerSeg);
+    if (advance > 0) {
+      drawn = Math.min(drawn + advance, total);
+      accumMs -= advance * msPerSeg;
+    }
+
+    // Redraw everything up to `drawn`
+    clearCanvas(canvasId);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    ctx.beginPath();
+    for (let i = 0; i < drawn; i++) {
+      const seg = segments[i];
+      if (seg.lift) {
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(seg.x, seg.y);
+      } else {
+        ctx.lineTo(seg.x, seg.y);
+      }
+    }
+    ctx.stroke();
+
+    // Moving dot at current tip
+    if (drawn > 0 && drawn < total) {
+      const tip = segments[drawn - 1];
+      ctx.beginPath();
+      ctx.arc(tip.x, tip.y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = '#FFE66D';
+      ctx.fill();
+      ctx.strokeStyle = '#FF6B35';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+
+    if (drawn < total) {
+      writeAnim = requestAnimationFrame(drawFrame);
+    } else {
+      // Final clean redraw using dense segments, no dot
+      clearCanvas(canvasId);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      segments.forEach(seg => {
+        if (seg.lift) { ctx.stroke(); ctx.beginPath(); ctx.moveTo(seg.x, seg.y); }
+        else ctx.lineTo(seg.x, seg.y);
+      });
+      ctx.stroke();
+      if (callback) callback();
+    }
+  }
+
+  writeAnim = requestAnimationFrame(drawFrame);
+}
+
+function playWriting(which) {
+  const letter = selectedLetter;
+  const w = 240, h = 240;
+
+  if (which === 'upper') {
+    const strokes = getStrokesForLetter(letter.toUpperCase(), w, h);
+    animateStrokes('canvasUpper', strokes, '#FF6B35', null);
+  } else {
+    const strokes = getStrokesForLetter(letter.toLowerCase(), w, h);
+    animateStrokes('canvasLower', strokes, '#3B82F6', null);
+  }
+}
+
+function setWriteSpeed(s) { writeSpeed = s; }
+
+// ===== NUMBERS =====
+function buildNumbers() {
+  const grid = document.getElementById('numbersGrid');
+  grid.innerHTML = '';
+  const lang = numLang;
+  const names = lang === 'es' ? numbersES : numbersEN;
+  
+  for (let i = 0; i <= 100; i++) {
+    const card = document.createElement('div');
+    card.className = 'number-card';
+    card.innerHTML = `
+      <div class="num-digit">${i}</div>
+      <div class="sound-wave">🔊</div>
+    `;
+    card.onclick = () => {
+      document.querySelectorAll('.number-card').forEach(c => c.classList.remove('playing'));
+      card.classList.add('playing');
+      speak(names[i], lang);
+      setTimeout(() => card.classList.remove('playing'), 2000);
+    };
+    grid.appendChild(card);
+  }
+
+  // Add 1000, 10000, 100000, 1000000
+  [1000, 10000, 100000, 1000000].forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'number-card';
+    card.innerHTML = `
+      <div class="num-digit" style="font-size:28px">${n}</div>
+      <div class="sound-wave">🔊</div>
+    `;
+    card.onclick = () => {
+      document.querySelectorAll('.number-card').forEach(c => c.classList.remove('playing'));
+      card.classList.add('playing');
+      speak(names[n], lang);
+      setTimeout(() => card.classList.remove('playing'), 2000);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function setNumLang(lang) {
+  numLang = lang;
+  document.getElementById('enBtnNum').classList.toggle('active', lang === 'en');
+  document.getElementById('esBtnNum').classList.toggle('active', lang === 'es');
+  if (lang === 'en') speak('English', 'en');
+  else speak('Español', 'es');
+  setTimeout(buildNumbers, 600);
+}
+
+// ===== NUMBER WRITING =====
+const numberStrokes = {
+  0: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.08},
+      {type:'C',cx1:.75,cy1:.08,cx2:.88,cy2:.25,x:.88,y:.5},
+      {type:'C',cx1:.88,cy1:.75,cx2:.75,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.25,cy1:.92,cx2:.12,cy2:.75,x:.12,y:.5},
+      {type:'C',cx1:.12,cy1:.25,cx2:.25,cy2:.08,x:.5,y:.08},
+    ],w,h),
+  ],
+  1: (w,h) => [
+    bezierPoints([{type:'M',x:.35,y:.22},{type:'L',x:.5,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.5,y:.1},{type:'L',x:.5,y:.9}],w,h),
+    bezierPoints([{type:'M',x:.3,y:.9},{type:'L',x:.7,y:.9}],w,h),
+  ],
+  2: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.2,y:.32},
+      {type:'C',cx1:.2,cy1:.15,cx2:.32,cy2:.08,x:.5,y:.08},
+      {type:'C',cx1:.72,cy1:.08,cx2:.82,cy2:.2,x:.82,y:.35},
+      {type:'C',cx1:.82,cy1:.52,cx2:.65,cy2:.62,x:.5,y:.72},
+      {type:'L',x:.2,y:.9},
+      {type:'L',x:.82,y:.9},
+    ],w,h),
+  ],
+  3: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.22,y:.18},
+      {type:'C',cx1:.22,cy1:.08,cx2:.35,cy2:.08,x:.5,y:.08},
+      {type:'C',cx1:.72,cy1:.08,cx2:.82,cy2:.18,x:.82,y:.32},
+      {type:'C',cx1:.82,cy1:.46,cx2:.7,cy2:.5,x:.5,y:.5},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.5,y:.5},
+      {type:'C',cx1:.72,cy1:.5,cx2:.82,cy2:.58,x:.82,y:.7},
+      {type:'C',cx1:.82,cy1:.84,cx2:.7,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.32,cy1:.92,cx2:.2,cy2:.84,x:.2,y:.75},
+    ],w,h),
+  ],
+  4: (w,h) => [
+    bezierPoints([{type:'M',x:.65,y:.9},{type:'L',x:.65,y:.1}],w,h),
+    bezierPoints([{type:'M',x:.65,y:.1},{type:'L',x:.18,y:.62},{type:'L',x:.85,y:.62}],w,h),
+  ],
+  5: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.75,y:.1},{type:'L',x:.25,y:.1},{type:'L',x:.22,y:.46},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.22,y:.46},
+      {type:'C',cx1:.22,cy1:.38,cx2:.34,cy2:.34,x:.5,y:.34},
+      {type:'C',cx1:.72,cy1:.34,cx2:.82,cy2:.46,x:.82,y:.62},
+      {type:'C',cx1:.82,cy1:.78,cx2:.68,cy2:.9,x:.5,y:.9},
+      {type:'C',cx1:.3,cy1:.9,cx2:.18,cy2:.8,x:.18,y:.7},
+    ],w,h),
+  ],
+  6: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.75,y:.12},
+      {type:'C',cx1:.6,cy1:.08,cx2:.42,cy2:.08,x:.28,y:.18},
+      {type:'C',cx1:.12,cy1:.3,cx2:.1,cy2:.5,x:.1,y:.65},
+      {type:'C',cx1:.1,cy1:.82,cx2:.28,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.72,cy1:.92,cx2:.88,cy2:.78,x:.88,y:.62},
+      {type:'C',cx1:.88,cy1:.46,cx2:.72,cy2:.36,x:.5,y:.36},
+      {type:'C',cx1:.28,cy1:.36,cx2:.1,cy2:.48,x:.1,y:.65},
+    ],w,h),
+  ],
+  7: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.18,y:.12},{type:'L',x:.82,y:.12},
+      {type:'L',x:.42,y:.9},
+    ],w,h),
+  ],
+  8: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.18,y:.5},
+      {type:'C',cx1:.18,cy1:.36,cx2:.3,cy2:.08,x:.5,y:.08},
+      {type:'C',cx1:.7,cy1:.08,cx2:.82,cy2:.2,x:.82,y:.32},
+      {type:'C',cx1:.82,cy1:.46,cx2:.68,cy2:.5,x:.5,y:.5},
+      {type:'C',cx1:.32,cy1:.5,cx2:.18,cy2:.56,x:.18,y:.68},
+      {type:'C',cx1:.18,cy1:.82,cx2:.3,cy2:.92,x:.5,y:.92},
+      {type:'C',cx1:.7,cy1:.92,cx2:.82,cy2:.8,x:.82,y:.68},
+      {type:'C',cx1:.82,cy1:.54,cx2:.68,cy2:.5,x:.5,y:.5},
+      {type:'C',cx1:.32,cy1:.5,cx2:.18,cy2:.62,x:.18,y:.5},
+    ],w,h),
+  ],
+  9: (w,h) => [
+    bezierPoints([
+      {type:'M',x:.5,y:.08},
+      {type:'C',cx1:.72,cy1:.08,cx2:.88,cy2:.22,x:.88,y:.38},
+      {type:'C',cx1:.88,cy1:.56,cx2:.72,cy2:.66,x:.5,y:.66},
+      {type:'C',cx1:.28,cy1:.66,cx2:.12,cy2:.54,x:.12,y:.38},
+      {type:'C',cx1:.12,cy1:.22,cx2:.28,cy2:.08,x:.5,y:.08},
+    ],w,h),
+    bezierPoints([
+      {type:'M',x:.88,y:.38},{type:'L',x:.88,y:.78},
+      {type:'C',cx1:.88,cy1:.9,cx2:.72,cy2:.95,x:.5,y:.95},
+      {type:'C',cx1:.3,cy1:.95,cx2:.18,cy2:.88,x:.15,y:.8},
+    ],w,h),
+  ],
+  10: (w,h) => [
+    bezierPoints([{type:'M',x:.18,y:.22},{type:'L',x:.28,y:.12}],w,h),
+    bezierPoints([{type:'M',x:.28,y:.12},{type:'L',x:.28,y:.9}],w,h),
+    bezierPoints([
+      {type:'M',x:.5,y:.28},
+      {type:'C',cx1:.62,cy1:.14,cx2:.78,cy2:.14,x:.86,y:.28},
+      {type:'C',cx1:.92,cy1:.38,cx2:.92,cy2:.62,x:.86,y:.72},
+      {type:'C',cx1:.78,cy1:.86,cx2:.62,cy2:.86,x:.5,y:.72},
+      {type:'C',cx1:.44,cy1:.62,cx2:.44,cy2:.38,x:.5,y:.28},
+    ],w,h),
+  ],
+};
+
+function buildNumSelector() {
+  const container = document.getElementById('numSelector');
+  container.innerHTML = '';
+  for (let i = 0; i <= 10; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'num-select-btn' + (i === selectedNum ? ' active' : '');
+    btn.textContent = i;
+    btn.onclick = () => {
+      selectedNum = i;
+      document.querySelectorAll('.num-select-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      clearCanvas('canvasNum');
+    };
+    container.appendChild(btn);
+  }
+}
+
+function playNumWriting() {
+  const strokes = numberStrokes[selectedNum];
+  if (!strokes) return;
+  const w = 280, h = 280;
+  animateStrokes('canvasNum', strokes(w, h), '#A855F7', null);
+}
+
+// ===== PHONICS =====
+let phLang = 'en';
+
+const vowels = ['A','E','I','O','U'];
+
+const phonicsFamilies = [
+  { cons:'M', syls:['MA','ME','MI','MO','MU'] },
+  { cons:'S', syls:['SA','SE','SI','SO','SU'] },
+  { cons:'P', syls:['PA','PE','PI','PO','PU'] },
+  { cons:'T', syls:['TA','TE','TI','TO','TU'] },
+  { cons:'L', syls:['LA','LE','LI','LO','LU'] },
+  { cons:'N', syls:['NA','NE','NI','NO','NU'] },
+  { cons:'B', syls:['BA','BE','BI','BO','BU'] },
+  { cons:'D', syls:['DA','DE','DI','DO','DU'] },
+  { cons:'F', syls:['FA','FE','FI','FO','FU'] },
+  { cons:'R', syls:['RA','RE','RI','RO','RU'] },
+  { cons:'C', syls:['CA','CE','CI','CO','CU'] },
+  { cons:'G', syls:['GA','GE','GI','GO','GU'] },
+  { cons:'V', syls:['VA','VE','VI','VO','VU'] },
+  { cons:'J', syls:['JA','JE','JI','JO','JU'] },
+  { cons:'CH', syls:['CHA','CHE','CHI','CHO','CHU'] },
+  { cons:'LL', syls:['LLA','LLE','LLI','LLO','LLU'] },
+  { cons:'RR', syls:['RRA','RRE','RRI','RRO','RRU'] },
+];
+
+// English pronunciation map: how to spell each syllable so TTS reads it as a sound
+const enPhonics = {
+  'A':'ah','E':'eh','I':'ee','O':'oh','U':'uh',
+  'MA':'mah','ME':'may','MI':'mee','MO':'moh','MU':'muh',
+  'SA':'sah','SE':'say','SI':'see','SO':'soh','SU':'supp',
+  'PA':'pah','PE':'pay','PI':'pee','PO':'poh','PU':'puh',
+  'TA':'tah','TE':'tay','TI':'tee','TO':'toh','TU':'tuh',
+  'LA':'lah','LE':'lay','LI':'lee','LO':'loh','LU':'lupp',
+  'NA':'nah','NE':'nay','NI':'nee','NO':'noh','NU':'nuh',
+  'BA':'bah','BE':'bay','BI':'bee','BO':'boh','BU':'bupp',
+  'DA':'dah','DE':'day','DI':'dee','DO':'doh','DU':'duh',
+  'FA':'fah','FE':'fay','FI':'fee','FO':'foh','FU':'fuh',
+  'RA':'rah','RE':'ray','RI':'ree','RO':'roh','RU':'rupp',
+  'CA':'kah','CE':'say','CI':'see','CO':'koh','CU':'kuh',
+  'GA':'gah','GE':'gay','GI':'gee','GO':'goh','GU':'gupp',
+  'VA':'vah','VE':'vay','VI':'vee','VO':'voh','VU':'vuh',
+  'JA':'jja','JE':'jeh','JI':'jee','JO':'joh','JU':'juh',
+  'CHA':'chah','CHE':'chay','CHI':'chee','CHO':'tchoh','CHU':'chuh',
+  'LLA':'lah','LLE':'lay','LLI':'lee','LLO':'loh','LLU':'lupp',
+  'RRA':'rah','RRE':'ray','RRI':'ree','RRO':'roh','RRU':'rupp',
+};
+
+// Spanish pronunciation map: syllables that the es-MX TTS misreads
+const esPhonics = {
+  'RU':'rú','RR':'rr','RRA':'rrá','RRE':'rré','RRI':'rrí','RRO':'rró','RRU':'rrú',
+  'GE':'gue','GI':'gui',
+  'CE':'se','CI':'si',
+  'CU':'kú','CHU':'chú',
+  'JU':'jú',
+  'LL':'ll','LLA':'llá','LLE':'llé','LLI':'llí','LLO':'lló','LLU':'llú',
+};
+
+function speakSyl(text) {
+  synth.cancel();
+  const lang = phLang === 'es' ? 'es-MX' : 'en-US';
+  const spokenText = phLang === 'en'
+    ? (enPhonics[text] || text.toLowerCase())
+    : (esPhonics[text] || text.toLowerCase());
+  const u = new SpeechSynthesisUtterance(spokenText);
+  u.lang = lang;
+  u.rate = 0.8;
+  u.pitch = 1.1;
+  const bar = document.getElementById('playingBar');
+  const txt = document.getElementById('playingText');
+  if (bar) bar.classList.add('show');
+  if (txt) txt.textContent = '🔊 ' + text;
+  u.onend = () => { if (bar) bar.classList.remove('show'); };
+  synth.speak(u);
+}
+
+function buildPhonics() {
+  const container = document.getElementById('phonicsGrid');
+  container.innerHTML = '';
+
+  // Vowel row
+  const vowelRow = document.createElement('div');
+  vowelRow.className = 'phonics-family';
+  const vowelLabel = document.createElement('div');
+  vowelLabel.className = 'phonics-family-label';
+  vowelLabel.textContent = 'VOWELS';
+  vowelRow.appendChild(vowelLabel);
+  const vowelGrid = document.createElement('div');
+  vowelGrid.className = 'phonics-row';
+  vowels.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'phonics-card';
+    card.innerHTML = `<div class="phonics-syl">${v}</div>`;
+    card.onclick = () => {
+      document.querySelectorAll('.phonics-card').forEach(c => c.classList.remove('playing'));
+      card.classList.add('playing');
+      speakSyl(v);
+      setTimeout(() => card.classList.remove('playing'), 1500);
+    };
+    vowelGrid.appendChild(card);
+  });
+  vowelRow.appendChild(vowelGrid);
+  container.appendChild(vowelRow);
+
+  // Consonant families
+  phonicsFamilies.forEach(family => {
+    const section = document.createElement('div');
+    section.className = 'phonics-family';
+    const label = document.createElement('div');
+    label.className = 'phonics-family-label';
+    label.textContent = family.cons + ' —';
+    section.appendChild(label);
+    const row = document.createElement('div');
+    row.className = 'phonics-row';
+    family.syls.forEach(syl => {
+      const card = document.createElement('div');
+      card.className = 'phonics-card';
+      card.innerHTML = `<div class="phonics-syl">${syl}</div>`;
+      card.onclick = () => {
+        document.querySelectorAll('.phonics-card').forEach(c => c.classList.remove('playing'));
+        card.classList.add('playing');
+        speakSyl(syl);
+        setTimeout(() => card.classList.remove('playing'), 1500);
+      };
+      row.appendChild(card);
+    });
+    section.appendChild(row);
+    container.appendChild(section);
+  });
+}
+
+function setPhLang(lang) {
+  phLang = lang;
+  document.getElementById('enBtnPh').classList.toggle('active', lang === 'en');
+  document.getElementById('esBtnPh').classList.toggle('active', lang === 'es');
+  if (lang === 'en') speak('English', 'en');
+  else speak('Español', 'es');
+}
+
+// ===== WORD BUILDER =====
+let bldLang = 'en';
+let builderWord = [];
+
+function setBldLang(lang) {
+  bldLang = lang;
+  document.getElementById('enBtnBld').classList.toggle('active', lang === 'en');
+  document.getElementById('esBtnBld').classList.toggle('active', lang === 'es');
+  if (lang === 'en') speak('English', 'en');
+  else speak('Español', 'es');
+}
+
+function buildBuilderGrid() {
+  const container = document.getElementById('builderGrid');
+  container.innerHTML = '';
+
+  const vowelSection = document.createElement('div');
+  vowelSection.innerHTML = '<div class="builder-family-label">VOWELS</div>';
+  const vowelRow = document.createElement('div');
+  vowelRow.className = 'builder-grid';
+  vowels.forEach(v => {
+    const btn = document.createElement('button');
+    btn.className = 'builder-syl-btn';
+    btn.textContent = v;
+    btn.onclick = () => addSyllable(v);
+    vowelRow.appendChild(btn);
+  });
+  vowelSection.appendChild(vowelRow);
+  container.appendChild(vowelSection);
+
+  phonicsFamilies.forEach(family => {
+    const sec = document.createElement('div');
+    sec.innerHTML = `<div class="builder-family-label">${family.cons} —</div>`;
+    const row = document.createElement('div');
+    row.className = 'builder-grid';
+    family.syls.forEach(syl => {
+      const btn = document.createElement('button');
+      btn.className = 'builder-syl-btn';
+      btn.textContent = syl;
+      btn.onclick = () => addSyllable(syl);
+      row.appendChild(btn);
+    });
+    sec.appendChild(row);
+    container.appendChild(sec);
+  });
+}
+
+function addSyllable(syl) {
+  builderWord.push(syl);
+  renderBuilderChips();
+  // Speak just this syllable
+  const spoken = bldLang === 'en' ? (enPhonics[syl] || syl.toLowerCase()) : (esPhonics[syl] || syl.toLowerCase());
+  const u = new SpeechSynthesisUtterance(spoken);
+  u.lang = bldLang === 'es' ? 'es-MX' : 'en-US';
+  u.rate = 0.8; u.pitch = 1.1;
+  synth.cancel();
+  synth.speak(u);
+}
+
+function renderBuilderChips() {
+  const chips = document.getElementById('builderChips');
+  if (builderWord.length === 0) {
+    chips.innerHTML = '<span style="color:#ccc;font-size:18px">tap syllables below ↓</span>';
+    return;
+  }
+  chips.innerHTML = '';
+  builderWord.forEach((syl, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'builder-chip';
+    chip.textContent = syl;
+    chip.title = 'tap to remove';
+    chip.onclick = () => { builderWord.splice(i, 1); renderBuilderChips(); };
+    chips.appendChild(chip);
+  });
+}
+
+function speakBuilderWord() {
+  if (builderWord.length === 0) return;
+  const fullWord = builderWord.join('').toLowerCase();
+  synth.cancel();
+  // Speak each syllable with a tiny pause, then the full word
+  let i = 0;
+  function speakNext() {
+    if (i < builderWord.length) {
+      const syl = builderWord[i];
+      const spoken = bldLang === 'en' ? (enPhonics[syl] || syl.toLowerCase()) : (esPhonics[syl] || syl.toLowerCase());
+      const u = new SpeechSynthesisUtterance(spoken);
+      u.lang = bldLang === 'es' ? 'es-MX' : 'en-US';
+      u.rate = 0.75; u.pitch = 1.1;
+      u.onend = () => { i++; setTimeout(speakNext, 120); };
+      synth.speak(u);
+    } else {
+      // Say the full word
+      setTimeout(() => {
+        const u2 = new SpeechSynthesisUtterance(fullWord);
+        u2.lang = bldLang === 'es' ? 'es-MX' : 'en-US';
+        u2.rate = 0.85; u2.pitch = 1.1;
+        const bar = document.getElementById('playingBar');
+        const txt = document.getElementById('playingText');
+        if (bar) bar.classList.add('show');
+        if (txt) txt.textContent = '🔊 ' + builderWord.join('');
+        u2.onend = () => { if (bar) bar.classList.remove('show'); };
+        synth.speak(u2);
+      }, 300);
+    }
+  }
+  speakNext();
+}
+
+function clearBuilder() {
+  builderWord = [];
+  renderBuilderChips();
+}
+
+// ===== TRACING =====
+let traceLetter = 'A';
+let traceIsDrawing = false;
+let traceAnim = null;
+
+function buildTracingSection() {
+  const sel = document.getElementById('traceLetterSelector');
+  sel.innerHTML = '';
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  letters.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-select-btn trace-sel-btn' + (l === traceLetter ? ' active' : '');
+    btn.textContent = l;
+    btn.onclick = () => {
+      traceLetter = l;
+      document.querySelectorAll('.trace-sel-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      clearTrace();
+      const guide = document.getElementById('traceGuide');
+      if (guide) guide.getContext('2d').clearRect(0, 0, guide.width, guide.height);
+    };
+    sel.appendChild(btn);
+  });
+  setupTraceCanvas();
+}
+
+function setupTraceCanvas() {
+  const canvas = document.getElementById('traceCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - r.left, y: src.clientY - r.top };
+  }
+
+  canvas.onmousedown = canvas.ontouchstart = (e) => {
+    e.preventDefault();
+    traceIsDrawing = true;
+    const p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ctx.strokeStyle = '#3B82F6';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  };
+
+  canvas.onmousemove = canvas.ontouchmove = (e) => {
+    e.preventDefault();
+    if (!traceIsDrawing) return;
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  };
+
+  canvas.onmouseup = canvas.ontouchend = () => {
+    traceIsDrawing = false;
+  };
+}
+
+function showTraceGuide() {
+  const w = 280, h = 280;
+  const guide = document.getElementById('traceGuide');
+  if (!guide) return;
+  const gctx = guide.getContext('2d');
+  gctx.clearRect(0, 0, w, h);
+
+  const strokes = getStrokesForLetter(traceLetter.toUpperCase(), w, h);
+  if (!strokes) return;
+
+  // Animate the letter being drawn stroke by stroke in the WATCH pane
+  animateStrokes('traceGuide', strokes, '#FF6B35', null);
+}
+
+function clearTrace() {
+  const canvas = document.getElementById('traceCanvas');
+  if (!canvas) return;
+  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  const guide = document.getElementById('traceGuide');
+  if (guide) guide.getContext('2d').clearRect(0, 0, guide.width, guide.height);
+  if (writeAnim) { cancelAnimationFrame(writeAnim); writeAnim = null; }
+}
+
+// ===== NUMBER TRACING =====
+let traceNum = 0;
+let traceNumIsDrawing = false;
+
+function buildNumTracingSection() {
+  const sel = document.getElementById('traceNumSelector');
+  if (!sel) return;
+  sel.innerHTML = '';
+  for (let n = 0; n <= 10; n++) {
+    const btn = document.createElement('button');
+    btn.className = 'letter-select-btn trace-sel-btn' + (n === traceNum ? ' active' : '');
+    btn.textContent = n;
+    btn.onclick = () => {
+      traceNum = n;
+      document.querySelectorAll('#traceNumSelector .trace-sel-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      clearNumTrace();
+    };
+    sel.appendChild(btn);
+  }
+  setupNumTraceCanvas();
+}
+
+function setupNumTraceCanvas() {
+  const canvas = document.getElementById('traceNumCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - r.left, y: src.clientY - r.top };
+  }
+
+  canvas.onmousedown = canvas.ontouchstart = (e) => {
+    e.preventDefault();
+    traceNumIsDrawing = true;
+    const p = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    ctx.strokeStyle = '#3B82F6';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  };
+
+  canvas.onmousemove = canvas.ontouchmove = (e) => {
+    e.preventDefault();
+    if (!traceNumIsDrawing) return;
+    const p = getPos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  };
+
+  canvas.onmouseup = canvas.ontouchend = () => {
+    traceNumIsDrawing = false;
+  };
+}
+
+function showNumTraceGuide() {
+  const w = 280, h = 280;
+  const guide = document.getElementById('traceNumGuide');
+  if (!guide) return;
+  const gctx = guide.getContext('2d');
+  gctx.clearRect(0, 0, w, h);
+  clearNumTrace();
+
+  const strokes = numberStrokes[traceNum] ? numberStrokes[traceNum](w, h) : null;
+  if (!strokes) return;
+
+  // Animate stroke by stroke so student watches the number being drawn
+  animateStrokes('traceNumGuide', strokes, '#FF6B35', null);
+}
+
+function clearNumTrace() {
+  const canvas = document.getElementById('traceNumCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const guide = document.getElementById('traceNumGuide');
+  if (guide) guide.getContext('2d').clearRect(0, 0, guide.width, guide.height);
+}
+
+let matchMode = 'letters';
+let matchLang = 'en';
+let matchCorrectCount = 0;
+let matchWrongCount = 0;
+let matchAnswer = '';
+let matchLocked = false;
+
+const matchLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const matchNumbers = [0,1,2,3,4,5,6,7,8,9,10];
+
+function setMatchLang(lang) {
+  matchLang = lang;
+  const enBtn = document.getElementById('enBtnMatch');
+  const esBtn = document.getElementById('esBtnMatch');
+  if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+  if (esBtn) esBtn.classList.toggle('active', lang === 'es');
+  nextMatchQuestion();
+}
+
+function setMatchMode(mode) {
+  matchMode = mode;
+  document.getElementById('modeBtnLetters').classList.toggle('active', mode === 'letters');
+  document.getElementById('modeBtnNumbers').classList.toggle('active', mode === 'numbers');
+  matchCorrectCount = 0;
+  matchWrongCount = 0;
+  document.getElementById('matchCorrect').textContent = '0';
+  document.getElementById('matchWrong').textContent = '0';
+  document.getElementById('matchCelebration').textContent = '';
+  nextMatchQuestion();
+}
+
+function nextMatchQuestion() {
+  matchLocked = false;
+  document.getElementById('matchCelebration').textContent = '';
+
+  const pool = matchMode === 'letters' ? matchLetters : matchNumbers;
+  const correct = pool[Math.floor(Math.random() * pool.length)];
+  matchAnswer = String(correct);
+
+  // Pick 2 wrong answers
+  let wrong = [];
+  while (wrong.length < 2) {
+    const candidate = pool[Math.floor(Math.random() * pool.length)];
+    if (String(candidate) !== matchAnswer && !wrong.includes(String(candidate))) {
+      wrong.push(String(candidate));
+    }
+  }
+
+  // Shuffle choices
+  const choices = [matchAnswer, ...wrong].sort(() => Math.random() - 0.5);
+
+  // Set prompt
+  document.getElementById('matchPrompt').textContent = correct;
+
+  // Speak it
+  setTimeout(() => speakMatchPrompt(), 300);
+
+  // Render choices
+  const container = document.getElementById('matchChoices');
+  container.innerHTML = '';
+  choices.forEach(ch => {
+    const btn = document.createElement('div');
+    btn.className = 'match-choice';
+    btn.textContent = ch;
+    btn.onclick = () => handleMatchChoice(btn, ch);
+    container.appendChild(btn);
+  });
+}
+
+function speakMatchPrompt() {
+  const val = matchAnswer;
+  if (matchMode === 'letters') {
+    speakLetter(val, matchLang);
+  } else {
+    const names = matchLang === 'es' ? numbersES : numbersEN;
+    speak(names[parseInt(val)], matchLang);
+  }
+}
+
+function handleMatchChoice(btn, choice) {
+  if (matchLocked) return;
+  matchLocked = true;
+
+  if (choice === matchAnswer) {
+    btn.classList.add('correct');
+    matchCorrectCount++;
+    document.getElementById('matchCorrect').textContent = matchCorrectCount;
+    document.getElementById('matchCelebration').textContent = '👏';
+    speak(matchMode === 'letters' ? choice : (matchLang === 'es' ? numbersES[parseInt(choice)] : numbersEN[parseInt(choice)]), matchLang);
+    setTimeout(() => nextMatchQuestion(), 1400);
+  } else {
+    btn.classList.add('wrong');
+    matchWrongCount++;
+    document.getElementById('matchWrong').textContent = matchWrongCount;
+    setTimeout(() => {
+      btn.classList.remove('wrong');
+      matchLocked = false;
+    }, 800);
+  }
+}
+
+function initMatch() {
+  matchLang = 'en';
+  matchCorrectCount = 0;
+  matchWrongCount = 0;
+  const enBtn = document.getElementById('enBtnMatch');
+  const esBtn = document.getElementById('esBtnMatch');
+  if (enBtn) enBtn.classList.add('active');
+  if (esBtn) esBtn.classList.remove('active');
+  document.getElementById('matchCorrect').textContent = '0';
+  document.getElementById('matchWrong').textContent = '0';
+  document.getElementById('matchCelebration').textContent = '';
+  nextMatchQuestion();
+}
+
+// ===== SECTION SWITCH =====
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById(name);
+  const btn = document.querySelector(`[data-sec="${name}"]`);
+  if (sec) sec.classList.add('active');
+  if (btn) btn.classList.add('active');
+  
+  // Init section
+  if (name === 'writing') {
+    buildLetterSelector();
+    clearCanvas('canvasUpper');
+    clearCanvas('canvasLower');
+  }
+  if (name === 'numwrite') {
+    buildNumSelector();
+    clearCanvas('canvasNum');
+  }
+  if (name === 'builder') buildBuilderGrid();
+  if (name === 'trace') buildTracingSection();
+  if (name === 'numtrace') buildNumTracingSection();
+  if (name === 'match') initMatch();
+}
+
+// ===== INIT =====
+buildAlpha();
+buildNumbers();
+buildPhonics();
+
+// Announce app on load
+setTimeout(() => {
+  speak('Welcome! Tap any card to hear the sound!', 'en');
+}, 800);
+</script>
+</body>
+</html>
