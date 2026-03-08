@@ -1087,9 +1087,9 @@ function speak(text, lang, onDone) {
 
 function speakLetter(letter, lang) {
   const phonetics = {
-    'A':'ay','B':'bee','C':'see','D':'dee','E':'ee','F':'ef','G':'jee','H':'aych','I':'I',
-    'J':'jay','K':'kay','L':'el','M':'em','N':'en','O':'oh','P':'pee','Q':'kyoo','R':'ar',
-    'S':'es','T':'tee','U':'you','V':'vee','W':'double you','X':'ex','Y':'why','Z':'zee'
+    'A':'eigh','B':'bee','C':'see','D':'dee','E':'ee','F':'ef','G':'gee','H':'aych','I':'eyye',
+    'J':'jay','K':'kay','L':'el','M':'em','N':'en','O':'oh','P':'pee','Q':'cue','R':'are',
+    'S':'ess','T':'tee','U':'you','V':'vee','W':'double you','X':'ex','Y':'why','Z':'zee'
   };
   const phoneticsES = {
     'A':'ah','B':'beh','C':'seh','D':'deh','E':'eh','F':'efeh','G':'heh','H':'acheh','I':'i',
@@ -1099,23 +1099,7 @@ function speakLetter(letter, lang) {
 
   const text = lang === 'es' ? (phoneticsES[letter] || letter) : (phonetics[letter] || letter);
 
-  // Letter I needs a slower rate so it sounds full and clear, not clipped
-  const slowLetters = ['I'];
-  if (lang === 'en' && slowLetters.includes(letter)) {
-    synth.cancel();
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'en-US';
-    utter.rate = 0.4;
-    utter.pitch = 1.1;
-    const bar = document.getElementById('playingBar');
-    const txt = document.getElementById('playingText');
-    if (bar) bar.classList.add('show');
-    if (txt) txt.textContent = '🔊 ' + text;
-    utter.onend = () => { if (bar) bar.classList.remove('show'); };
-    synth.speak(utter);
-  } else {
-    speak(text, lang);
-  }
+  speak(text, lang);
 }
 
 // ===== ALPHABET =====
