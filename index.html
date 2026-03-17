@@ -231,6 +231,40 @@
     margin-bottom: 24px;
   }
 
+  .letter-pair-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .letter-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .letter-pair-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 3px solid #ddd;
+    background: white;
+    cursor: pointer;
+    font-family: 'Baloo 2', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .letter-pair-btn:hover { border-color: var(--primary); transform: scale(1.08); }
+  .letter-pair-btn.upper-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .letter-pair-btn.lower-btn.active { background: #F97316; color: white; border-color: #F97316; }
+
   .letter-select-btn {
     width: 52px;
     height: 52px;
@@ -848,6 +882,9 @@
           <button class="ctrl-btn play-btn" onclick="playWriting('upper')">▶️ SHOW</button>
         </div>
       </div>
+    </div>
+    <div class="letter-selector" id="letterSelectorLower"></div>
+    <div class="canvas-container">
       <div class="write-canvas-wrap">
         <div class="write-label">⬇️ small</div>
         <canvas id="canvasLower" width="240" height="240"></canvas>
@@ -929,7 +966,7 @@
   <div class="section" id="trace">
     <div class="section-header"><span class="big-emoji">✏️👆</span></div>
     <div class="trace-container">
-      <div class="letter-selector" id="traceLetterSelector"></div>
+      <div class="letter-pair-selector" id="traceLetterSelector"></div>
 
       <!-- WATCH pane -->
       <div style="text-align:center;margin-bottom:4px">
@@ -1146,11 +1183,31 @@ function buildLetterSelector() {
     btn.onclick = () => {
       selectedLetter = letter;
       document.querySelectorAll('.letter-select-btn').forEach(b => b.classList.remove('active'));
+      // highlight matching upper and lower buttons
+      document.querySelectorAll('.letter-select-btn[data-upper="' + letter + '"], .letter-select-btn[data-lower="' + letter + '"]').forEach(b => b.classList.add('active'));
       btn.classList.add('active');
       clearCanvas('canvasUpper');
       clearCanvas('canvasLower');
     };
+    btn.dataset.upper = letter;
     container.appendChild(btn);
+  });
+
+  const lowerContainer = document.getElementById('letterSelectorLower');
+  lowerContainer.innerHTML = '';
+  alphabetEN.forEach(letter => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-select-btn' + (letter === selectedLetter ? ' active' : '');
+    btn.textContent = letter.toLowerCase();
+    btn.dataset.lower = letter;
+    btn.onclick = () => {
+      selectedLetter = letter;
+      document.querySelectorAll('.letter-select-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.letter-select-btn[data-upper="' + letter + '"], .letter-select-btn[data-lower="' + letter + '"]').forEach(b => b.classList.add('active'));
+      clearCanvas('canvasUpper');
+      clearCanvas('canvasLower');
+    };
+    lowerContainer.appendChild(btn);
   });
 }
 
@@ -2215,6 +2272,7 @@ function clearBuilder() {
 
 // ===== TRACING =====
 let traceLetter = 'A';
+let traceCase = 'upper';
 let traceIsDrawing = false;
 let traceAnim = null;
 
@@ -2222,20 +2280,40 @@ function buildTracingSection() {
   const sel = document.getElementById('traceLetterSelector');
   sel.innerHTML = '';
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  function selectLetter(l, cas) {
+    traceLetter = l;
+    traceCase = cas;
+    sel.querySelectorAll('.letter-pair-btn').forEach(b => b.classList.remove('active'));
+    sel.querySelector('[data-letter="' + l + '"][data-case="' + cas + '"]').classList.add('active');
+    clearTrace();
+    const guide = document.getElementById('traceGuide');
+    if (guide) guide.getContext('2d').clearRect(0, 0, guide.width, guide.height);
+  }
+
   letters.forEach(l => {
-    const btn = document.createElement('button');
-    btn.className = 'letter-select-btn trace-sel-btn' + (l === traceLetter ? ' active' : '');
-    btn.textContent = l;
-    btn.onclick = () => {
-      traceLetter = l;
-      document.querySelectorAll('.trace-sel-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      clearTrace();
-      const guide = document.getElementById('traceGuide');
-      if (guide) guide.getContext('2d').clearRect(0, 0, guide.width, guide.height);
-    };
-    sel.appendChild(btn);
+    const pair = document.createElement('div');
+    pair.className = 'letter-pair';
+
+    const upper = document.createElement('button');
+    upper.className = 'letter-pair-btn upper-btn' + (l === traceLetter && traceCase === 'upper' ? ' active' : '');
+    upper.textContent = l;
+    upper.dataset.letter = l;
+    upper.dataset.case = 'upper';
+    upper.onclick = () => selectLetter(l, 'upper');
+
+    const lower = document.createElement('button');
+    lower.className = 'letter-pair-btn lower-btn' + (l === traceLetter && traceCase === 'lower' ? ' active' : '');
+    lower.textContent = l.toLowerCase();
+    lower.dataset.letter = l;
+    lower.dataset.case = 'lower';
+    lower.onclick = () => selectLetter(l, 'lower');
+
+    pair.appendChild(upper);
+    pair.appendChild(lower);
+    sel.appendChild(pair);
   });
+
   setupTraceCanvas();
 }
 
@@ -2283,7 +2361,7 @@ function showTraceGuide() {
   const gctx = guide.getContext('2d');
   gctx.clearRect(0, 0, w, h);
 
-  const strokes = getStrokesForLetter(traceLetter.toUpperCase(), w, h);
+  const strokes = getStrokesForLetter(traceCase === 'lower' ? traceLetter.toLowerCase() : traceLetter.toUpperCase(), w, h);
   if (!strokes) return;
 
   // Animate the letter being drawn stroke by stroke in the WATCH pane
